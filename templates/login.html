@@ -4,7 +4,7 @@
     <h3>Please login to access your task list.</h3>
 
     <form action="" method="post">
-        Username: <input type="text" name="username" value="{{ request.form.username }}">
+        Username: <input type="text" name="username" value="{{ request.form.username }}" autofocus>
         Password: <input type="password" name="password" value="{{ request.form.password }}">
         <input type="submit" value="Login">
     </form>

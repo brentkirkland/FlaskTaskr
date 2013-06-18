@@ -2,6 +2,12 @@
 {% block content %}
     <h1>Welcome to FlaskTaskR</h1>
     <a href="/logout">Logout</a>
+
+    <!--
+    The user can Add or 'Edit' a task from here. The href="update" in the datagrid class below,
+    allow the user to Edit (or Update) a desired Task. If so, the action"add" will be used
+    to update the content of a task.
+    -->
     <div class="add-task">
         <h3>Add a new task:</h3>
         <table>
@@ -9,15 +15,16 @@
         <form action="{{ url_for('add') }}" method="post">
             <td>
             <label>Task Name:</label>
-            <input name="name" type="text">
+            <input name="task_idEdit" type="hidden" value="{{ task_idEdit }}">
+            <input name="name" type="text" value="{{ nameEdit }}">
             </td>
             <td>
             <label>Due Date (mm/dd/yyyy):</label>
-            <input name="due_date" type="text" width="120px">
+            <input name="due_date" type="text" width="120px" value="{{ due_dateEdit }}">
             </td>
             <td>
             <label>Priority:</label>
-            <select name="priority" width="100px">
+            <select name="priority" width="100px" id="cbP">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -29,6 +36,11 @@
             <option value="9">9</option>
             <option value="10">10</option>
             </select>
+            {% if priorityEdit >= 1 and priorityEdit <= 10 %}
+                <script>
+                    document.getElementById("cbP").value="{{ priorityEdit }}";
+                </script>
+            {% endif %}
             </td>
             <td>
             &nbsp; 
@@ -39,6 +51,8 @@
         </tr>
         </table>
     </div>
+
+    <!-- Datagrid of open tasks -->
     <div class="entries">
     <br/>
     <br/>
@@ -60,6 +74,7 @@
         <td width="50px">{{ o.priority }}</td>
         <td>
             <a href="{{ url_for('delete', task_id = o.task_id) }}">Delete</a>  -
+            <a href="{{ url_for('update', task_id = o.task_id) }}">Edit</a>  -
             <a href="{{ url_for('complete', task_id = o.task_id) }}">Mark as Complete</a>
         </td>
         </tr> 
@@ -67,6 +82,8 @@
     </table>
     </div>
     </div>
+
+    <!-- Datagrid of closed tasks -->
     <br/>
     <br/>
     <div class="entries">
